@@ -4,10 +4,11 @@
 const int nr_agencia = 1020, nr_conta = 123, nr_senha = 1234;
 float saldo = 0.0, limite = 500.00, total;
 float operacao_credito [100], operacao_debito [100]; 
-int total_credito = 0, total_debito = 0;
-
+int total_credito = 0, total_debito = 0, op;
+//funcao para mostrar o extrato bancario digital
+//exibe todas as operacoes de credito e debito realizadas e o saldo final
 void consulta_extrato (){
-    int i, rep;
+    int i, op;
     printf("Extrato Bancario Completo:\n\n");
     printf("Operacoes feitas com credito: \n");
     for (i = 0; i < total_credito; i++){
@@ -23,52 +24,64 @@ void consulta_extrato (){
      do{
         printf("\n");
         printf("\nPara voltar para o menu, digite 5: ");
-        scanf("%d", &rep);
-        system("cls");
+        scanf("%d", &op);
+        system("clear");
         chama_menu();
-    }while (rep != 5);
+    }while (op != 5);
 }
 
-
+//exibe o saldo e o limite disponivel
 void consulta_saldo (){
-    int rep;
+    int op;
     printf("Saldo:              R$ %.2f", saldo);
     printf("\nLimite:           R$ %.2f", limite);
     printf("\nDisponivel:       R$ %.2f", total = saldo + limite);
     do{
         printf("\n");
         printf("\nPara voltar para o menu, digite 5: ");
-        scanf("%d", &rep);
-        system("cls");
+        scanf("%d", &op);
+        system("clear");
         chama_menu();
-    }while (rep != 5);
+    }while (op != 5);
 }
-
+//funcao para realizar deposito 
+//atualiza o saldo da conta e registra a operacao de credito
 void realizar_deposito (float *saldo){
     float num;
+    int op;
     printf("Entre com o valor que gostaria de depositar: ");
     scanf("%f", &num);
-    *saldo = *saldo + num;
-    
-    if (cont1 < 100){
-        
-        operacao_credito[total_credito++] = + num;
+    *saldo = *saldo + num;//atualiza o saldo com o velor do deposito
+
+    if (total_credito < 100){
+
+        operacao_credito[total_credito++] = + num;//registro da operaca de credito
     }
     else {
         printf("Credito cheio");
     }
-    
-}
+    do{
+        printf("\n");
+        printf("\nPara voltar para o menu, digite 5: ");
+        scanf("%d", &op);
+        system("clear");
+        chama_menu();
+    }while (op != 5);
 
+}
+//funcao para realizar um saque na conta
+//atualiza o saldo da conta e registra uma operacao de debito
 void realizar_saque(float *saldo, float *limite){
     float num;
-    total = *saldo + *limite;
+    int op;
+    
+    total = *saldo + *limite;//atualiza o saldo com o valor do saque
     printf("Digite o valor que gostaria de sacar: ");
     scanf("%f", &num);
-    
+
     if (total_debito < 100){
 
-        operacao_debito[total_debito++] = - num;
+        operacao_debito[total_debito++] = - num;//registro da operacao de debito
     } 
     else {
         printf("Debito cheio");
@@ -86,10 +99,17 @@ void realizar_saque(float *saldo, float *limite){
     }
     else {
         *saldo = *saldo - num;
-    }  
+    }  do{
+        printf("\n");
+        printf("\nPara voltar para o menu, digite 5: ");
+        scanf("%d", &op);
+        system("clear");
+        chama_menu();
+    }while (op != 5);
 
 }
-
+//funcao para preencher vetores de operacoes com valores nulos
+//essa funcao eh redundate pois os vetores sao inicializados diretamente nas funcoes
 void preenche_vetor (){
     for (int i = 0; i < 100; i++){
         operacao_credito [i] = 0.0;
@@ -97,18 +117,18 @@ void preenche_vetor (){
     }
 }
 
-void chama_menu (){
+void chama_menu(){
     int opcao;
 
     do {
         printf("\nEscolha uma opcao: ");
         printf("\n1 - Saldo\n2 - Extrato\n3 - Saque\n4 - Deposito\n5 - Sair\n Opcao: ");
         scanf("%d", &opcao);
-        system("cls");
+        system("cls");//limpa a tela
     }while (opcao != 1 && opcao != 2 && opcao != 3 && opcao != 4 && opcao != 5);
 
     switch (opcao){
-    
+
     case 1:
         consulta_saldo ();
         printf("\n\n");
@@ -118,12 +138,12 @@ void chama_menu (){
         break;
     case 3:
         realizar_saque (&saldo, &limite);
-        chama_menu();
+        
         break;
     case 4:
         realizar_deposito (&saldo);
         printf("\n\n");
-        chama_menu();
+        
         break;
     case 5: 
         printf("\nPrograma encerrado pelo usuario");
